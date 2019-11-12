@@ -1,32 +1,41 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+      <span style="height: 48px; display: block;"></span>
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="sidebar col-md-2 d-none d-md-block bg-light">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <router-link to="/" class="nav-link">Accueil</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/logout" class="nav-link">Déconnexion</router-link>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+          <div class="p-3 d-flex align-items-center justify-content-center h-100 ">
+            <router-view />
+          </div>
+        </main>
+      </div>
     </div>
-    <router-view />
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootstrap-vue/src/index.scss";
+@import "assets/sidebar.css";
+/*@import "./assets/sidebar.css";*/
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+/*.nav-link {*/
+/*  &.active {*/
+/*    background-color: rgba(255, 255, 255, 0.1);*/
+/*  }*/
+/*}*/
 </style>
