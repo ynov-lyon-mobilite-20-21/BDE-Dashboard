@@ -71,7 +71,7 @@ const updateUser = async user => {
   const { _id, ...userParams } = user;
 
   const result = await request({
-    url: `${Config.baseUrl}/users/${_id}`,
+    url: `${Config.baseUrl}/users/admin/${_id}`,
     method: "PUT",
     bearerToken: store.state.auth.token,
     body: { ...userParams },

@@ -81,18 +81,6 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-lg-3 col-form-label form-control-label"
-              >Confirm password</label
-            >
-            <div class="col-lg-9">
-              <input
-                class="form-control"
-                type="password"
-                v-model="confirmPassword"
-              />
-            </div>
-          </div>
-          <div class="form-group row">
             <div class="col-lg-3"></div>
             <div class="col-lg-9">
               <button type="submit" class="btn btn-primary mr-1">
@@ -127,7 +115,6 @@ export default {
     return {
       user: null,
       password: null,
-      confirmPassword: null,
       alertMessage: ""
     };
   },
@@ -152,15 +139,12 @@ export default {
     },
     async updateUser(e) {
       e.preventDefault();
-      if (this.password !== this.confirmPassword) {
-        this.alertMessage = "Les champs mot de passe ne correspondent pas";
-        return;
+      if (this.password) {
+        this.user.password = this.password;
       }
 
-      const update = await updateUser({
-        ...this.user,
-        password: this.password
-      });
+      const update = await updateUser(this.user);
+      this.password = null;
       console.log(update)
       this.fetchUser();
     }
