@@ -1,24 +1,47 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import VuexPersist from "vuex-persist";
+import { authenticateUser } from "../services/AuthenticationService";
+import { getUserById } from "../services/UserService";
+// import VuexPersist from "vuex-persist";
 
 Vue.use(Vuex);
 
-const vuexPersist = new VuexPersist({
-  key: "SELF_BUY_YNOV",
-  storage: window.localStorage,
-  reducer: state => ({ auth: state.auth })
-});
+// const vuexPersist = new VuexPersist({
+//   storage: window.localStorage,
+// });
 
 export default new Vuex.Store({
   state: {
     auth: {
       token: null,
       refreshToken: null
+    },
+    user: null
+  },
+  mutations: {
+    setToken(state, { token, refreshToken }) {
+      state.auth = { token, refreshToken };
+    },
+    setUser(state, user) {
+      state.user = user;
     }
   },
-  mutations: {},
-  actions: {},
-  modules: {},
-  plugins: [vuexPersist.plugin]
+  actions: {
+    async authenticateUser({ commit }, { mail, password }) {
+      const tokens = await authenticateUser(mail, password);
+      commit("setToken", {
+        token: tokens.token,
+        refreshToken: tokens.refreshTokené
+      });
+
+      const user = await getUserById(tokens.userId);
+      commit("setUser", user);
+      return true;
+    },
+    logoutUser({ commit }) {
+      commit("setToken", { refreshToken: null, token: null})
+      commit("setUser", null);
+    }
+  },
+  modules: {}
 });

@@ -12,13 +12,18 @@
                 <router-link to="/" class="nav-link">Accueil</router-link>
               </li>
               <li class="nav-item">
-                <router-link to="/logout" class="nav-link">Déconnexion</router-link>
+                <router-link to="/users" class="nav-link">Users</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/logout" class="nav-link"
+                  >Déconnexion</router-link
+                >
               </li>
             </ul>
           </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-          <div class="p-3 d-flex align-items-center justify-content-center h-100 ">
+          <div class="container h-100 py-4">
             <router-view />
           </div>
         </main>
@@ -31,11 +36,8 @@
 @import "node_modules/bootstrap/scss/bootstrap";
 @import "node_modules/bootstrap-vue/src/index.scss";
 @import "assets/sidebar.css";
-/*@import "./assets/sidebar.css";*/
 
-/*.nav-link {*/
-/*  &.active {*/
-/*    background-color: rgba(255, 255, 255, 0.1);*/
-/*  }*/
-/*}*/
+.btn {
+  color: white;
+}
 </style>

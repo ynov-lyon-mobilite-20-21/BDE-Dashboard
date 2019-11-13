@@ -1,4 +1,9 @@
-const request = async ({ url = null, method = 'GET', bearerToken = null, body = {} }) => {
+const request = async ({
+  url = null,
+  method = "GET",
+  bearerToken = null,
+  body = null
+}) => {
   const headers = {
     "Content-Type": "application/json"
   };
@@ -10,9 +15,12 @@ const request = async ({ url = null, method = 'GET', bearerToken = null, body = 
   const requestParams = {
     method,
     timeout: 5000,
-    headers,
-    body: JSON.stringify(body),
+    headers
   };
+
+  if (body) {
+    requestParams.body = JSON.stringify(body);
+  }
 
   return await fetch(url, requestParams);
 };
