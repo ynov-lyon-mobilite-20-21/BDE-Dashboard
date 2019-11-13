@@ -67,6 +67,51 @@ const createUser = async mail => {
   }
 };
 
+const updateUser = async user => {
+  const { _id, ...userParams } = user;
+
+  const result = await request({
+    url: `${Config.baseUrl}/users/${_id}`,
+    method: "PUT",
+    bearerToken: store.state.auth.token,
+    body: { ...userParams },
+  });
+
+  try {
+    const obj = await result.json();
+
+    if (!obj) {
+      return false;
+    }
+
+    return obj.data;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
+const activeUser = async (userId, activationKey, password) => {
+  const result = await request({
+    url: `${Config.baseUrl}/users/activation`,
+    method: "POST",
+    body: { userId, activationKey, password }
+  });
+
+  try {
+    const obj = await result.json();
+
+    if (!obj) {
+      return false;
+    }
+
+    return obj;
+  } catch (e) {
+    console.log(e);
+    return { success: false, error: e };
+  }
+};
+
 const getUsers = async () => {
   const result = await request({
     url: `${Config.baseUrl}/users`,
@@ -88,4 +133,4 @@ const getUsers = async () => {
   }
 };
 
-export { getUserById, getUsers, deleteUserById, createUser };
+export { getUserById, getUsers, deleteUserById, createUser, activeUser, updateUser };

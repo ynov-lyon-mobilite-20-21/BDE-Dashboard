@@ -35,11 +35,17 @@ export default new Vuex.Store({
       });
 
       const user = await getUserById(tokens.userId);
+
+      if (!user.isAdmin) {
+        commit("setToken", { refreshToken: null, token: null });
+        return false;
+      }
+
       commit("setUser", user);
       return true;
     },
     logoutUser({ commit }) {
-      commit("setToken", { refreshToken: null, token: null})
+      commit("setToken", { refreshToken: null, token: null });
       commit("setUser", null);
     }
   },

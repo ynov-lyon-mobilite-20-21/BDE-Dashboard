@@ -1,15 +1,19 @@
 <template>
-  <div id="app">
+  <layout>
     <h1>HOME</h1>
     <p>Bonjour {{ user.mail }}</p>
-  </div>
+  </layout>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import LayoutSidebar from "../layouts/LayoutSidebar";
 
 export default {
   name: "Home",
+  components: {
+    layout: LayoutSidebar
+  },
   computed: {
     ...mapState(["user"])
   }

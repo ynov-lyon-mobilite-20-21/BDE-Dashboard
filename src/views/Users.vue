@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <layout>
     <div v-if="!users" class="loading">
       Loading...
     </div>
@@ -95,6 +95,25 @@
                   />
                 </svg>
               </button>
+              <button
+                v-if="!user.active"
+                type="button"
+                class="btn btn-success"
+                :data-user-mail="user.mail"
+                @click="handleResendActivationLink"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                  />
+                </svg>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -103,7 +122,9 @@
     <modal v-model="addUserModelIsOpen" title="Add user">
       <form @submit="createUser">
         <div class="form-group row">
-          <label class="col-lg-3 col-form-label form-control-label">Email</label>
+          <label class="col-lg-3 col-form-label form-control-label"
+            >Email</label
+          >
           <div class="col-lg-9">
             <input class="form-control" type="email" v-model="addUserMail" />
           </div>
@@ -111,27 +132,28 @@
         <div class="text-right">
           <button type="submit" class="btn btn-success">
             <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
             >
               <path
-                      fill="currentColor"
-                      d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                fill="currentColor"
+                d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
               />
             </svg>
           </button>
         </div>
       </form>
     </modal>
-  </div>
+  </layout>
 </template>
 
 <script>
 import { getUsers, deleteUserById, createUser } from "../services/UserService";
 import Modal from "../components/Modal";
 import Message from "../components/Message";
+import LayoutSidebar from "../layouts/LayoutSidebar";
 
 export default {
   name: "Users",
@@ -145,9 +167,13 @@ export default {
   },
   components: {
     modal: Modal,
-    message: Message
+    message: Message,
+    layout: LayoutSidebar
   },
   created() {
+    this.fetchUsers();
+  },
+  beforeMount() {
     this.fetchUsers();
   },
   methods: {
@@ -192,6 +218,16 @@ export default {
         this.alertMessage = `User “${id}“ is now deleted !`;
       } catch (e) {
         this.alertMessage = `Can't delete user “${id}“ !`;
+      }
+    },
+    async handleResendActivationLink(e) {
+      e.preventDefault();
+      const mail = e.currentTarget.getAttribute("data-user-mail");
+      try {
+        await createUser(mail);
+        this.alertMessage = `Mail send to ${mail}`;
+      } catch (e) {
+        this.alertMessage = `Can't send mail to ${mail}`;
       }
     }
   }

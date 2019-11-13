@@ -1,12 +1,18 @@
 <template>
-  <h1>LOGOUT</h1>
+  <layout>
+    <h1>LOGOUT</h1>
+  </layout>
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import LayoutSidebar from "../layouts/LayoutSidebar";
+import { mapActions } from "vuex";
 
 export default {
   name: "Logout",
+  components: {
+    layout: LayoutSidebar,
+  },
   created() {
     this.logoutUser();
     this.$router.push({ name: "login" });

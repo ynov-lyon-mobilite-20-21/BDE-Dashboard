@@ -1,40 +1,60 @@
 <template>
-  <div>
+  <layout>
     <div v-if="!user" class="loading">
       Loading...
     </div>
     <div v-else class="row m-y-2">
-      <div class="col-lg-4 text-lg-center">
+      <div class="col-lg-4 text-lg-center row">
+        <backButton />
         <h2>Edit Profile</h2>
       </div>
       <div class="col-lg-8">
-        <div class="alert alert-info alert-dismissable">
-          <a class="panel-close close" data-dismiss="alert">×</a> This is an
-          <strong>.alert</strong>. Use this to show important messages to the
-          user.
-        </div>
+        <message :message="alertMessage" />
       </div>
       <div class="col-lg-4"></div>
       <div class="col-lg-8 push-lg-4 personal-info">
-        <form role="form">
-          <!--          <div class="form-group row">-->
-          <!--            <label class="col-lg-3 col-form-label form-control-label">First name</label>-->
-          <!--            <div class="col-lg-9">-->
-          <!--              <input class="form-control" type="text" value="Jane" />-->
-          <!--            </div>-->
-          <!--          </div>-->
-          <!--          <div class="form-group row">-->
-          <!--            <label class="col-lg-3 col-form-label form-control-label">Last name</label>-->
-          <!--            <div class="col-lg-9">-->
-          <!--              <input class="form-control" type="text" value="Bishop" />-->
-          <!--            </div>-->
-          <!--          </div>-->
+        <form role="form" @submit="updateUser">
+          <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label"
+              >First name</label
+            >
+            <div class="col-lg-9">
+              <input
+                class="form-control"
+                type="text"
+                v-model="user.firstName"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label"
+              >Last name</label
+            >
+            <div class="col-lg-9">
+              <input class="form-control" type="text" v-model="user.lastName" />
+            </div>
+          </div>
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label"
               >Email</label
             >
             <div class="col-lg-9">
               <input class="form-control" type="email" v-model="user.mail" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label
+              class="col-lg-3 col-form-label form-control-label form-check-label"
+              for="exampleCheck1"
+              >Privilèges administrateur</label
+            >
+            <div class="col-lg-9">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="exampleCheck1"
+                v-model="user.isAdmin"
+              />
             </div>
           </div>
           <!--          <div class="form-group row">-->
@@ -57,7 +77,7 @@
               >Password</label
             >
             <div class="col-lg-9">
-              <input class="form-control" type="password" value="11111122333" />
+              <input class="form-control" type="password" v-model="password" />
             </div>
           </div>
           <div class="form-group row">
@@ -65,7 +85,11 @@
               >Confirm password</label
             >
             <div class="col-lg-9">
-              <input class="form-control" type="password" value="11111122333" />
+              <input
+                class="form-control"
+                type="password"
+                v-model="confirmPassword"
+              />
             </div>
           </div>
           <div class="form-group row">
@@ -89,18 +113,28 @@
         </form>
       </div>
     </div>
-  </div>
+  </layout>
 </template>
 <script>
-import { getUserById } from "../services/UserService";
+import { getUserById, updateUser } from "../services/UserService";
+import LayoutSidebar from "../layouts/LayoutSidebar";
+import BackButton from "../components/BackButton";
+import Message from "../components/Message";
 
 export default {
   name: "UserEdit",
   data() {
     return {
       user: null,
-      password: null
+      password: null,
+      confirmPassword: null,
+      alertMessage: ""
     };
+  },
+  components: {
+    layout: LayoutSidebar,
+    backButton: BackButton,
+    message: Message
   },
   created() {
     this.fetchUser();
@@ -115,6 +149,20 @@ export default {
       }
 
       this.user = user;
+    },
+    async updateUser(e) {
+      e.preventDefault();
+      if (this.password !== this.confirmPassword) {
+        this.alertMessage = "Les champs mot de passe ne correspondent pas";
+        return;
+      }
+
+      const update = await updateUser({
+        ...this.user,
+        password: this.password
+      });
+      console.log(update)
+      this.fetchUser();
     }
   }
 };
