@@ -31,7 +31,7 @@ export default new Vuex.Store({
       const tokens = await authenticateUser(mail, password);
       commit("setToken", {
         token: tokens.token,
-        refreshToken: tokens.refreshTokené
+        refreshToken: tokens.refreshToken
       });
 
       const user = await getUserById(tokens.userId);
