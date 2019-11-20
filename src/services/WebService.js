@@ -22,7 +22,20 @@ const request = async ({
     requestParams.body = JSON.stringify(body);
   }
 
-  return await fetch(url, requestParams);
+  const result = await fetch(url, requestParams);
+
+  try {
+    const obj = await result.json();
+
+    if (!obj) {
+      return { success: false };
+    }
+
+    return obj;
+  } catch (e) {
+    console.log(e);
+    return { success: false };
+  }
 };
 
 export { request };
