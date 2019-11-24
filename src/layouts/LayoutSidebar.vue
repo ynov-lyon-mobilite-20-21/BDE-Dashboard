@@ -15,6 +15,12 @@
                 <router-link to="/administration/users" class="nav-link">Users</router-link>
               </li>
               <li class="nav-item">
+                <router-link to="/administration/products" class="nav-link">Products</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/administration/images" class="nav-link">Images</router-link>
+              </li>
+              <li class="nav-item">
                 <router-link to="/administration/logout" class="nav-link"
                   >Déconnexion</router-link
                 >

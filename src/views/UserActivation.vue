@@ -31,7 +31,7 @@ import Message from "../components/Message";
 export default {
   name: "UserActivation",
   components: {
-    message: Message
+    Message
   },
   data() {
     return {

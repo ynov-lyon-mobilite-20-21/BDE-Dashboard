@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { authenticateUser } from "../services/AuthenticationService";
-import { getUserById } from "../services/UserService";
+import { me } from "../services/UserService";
 // import VuexPersist from "vuex-persist";
 
 Vue.use(Vuex);
@@ -30,24 +30,28 @@ export default new Vuex.Store({
     async authenticateUser({ commit }, { mail, password }) {
       const tokens = await authenticateUser(mail, password);
       commit("setToken", {
-        token: tokens.token,
-        refreshToken: tokens.refreshToken
+        token: tokens.data.token,
+        refreshToken: tokens.data.refreshToken
       });
 
-      const user = await getUserById(tokens.userId);
+      const user = await me();
 
-      if (!user.isAdmin) {
+      if (!user.data.isAdmin) {
         commit("setToken", { refreshToken: null, token: null });
         return false;
       }
 
-      commit("setUser", user);
+      commit("setUser", user.data);
       return true;
     },
-    logoutUser({ commit }) {
+    logoutUser () {
       commit("setToken", { refreshToken: null, token: null });
       commit("setUser", null);
     }
   },
-  modules: {}
+  modules: {},
+  getters: {
+    user: state => state.user,
+    token: state => state.auth.token
+  }
 });

@@ -2,15 +2,19 @@ import { request } from "./WebService";
 import Config from "../config";
 import store from "../store";
 
+const me = async () =>
+  await request({
+    url: `${Config.baseUrl}/me`,
+    method: "GET",
+    bearerToken: store.getters.token
+  });
+
 const getUserById = async id =>
-{
-  console.log(store)
-  return await request({
+  await request({
     url: `${Config.baseUrl}/users/${id}`,
     method: "GET",
     bearerToken: store.getters.token
   });
-}
 
 const deleteUserById = async id =>
   await request({
@@ -54,5 +58,6 @@ export {
   deleteUserById,
   createUser,
   activeUser,
-  updateUser
+  updateUser,
+  me
 };

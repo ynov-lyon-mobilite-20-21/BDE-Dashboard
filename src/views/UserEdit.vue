@@ -1,16 +1,11 @@
 <template>
-  <layout>
-    <div v-if="!user" class="loading">
-      Loading...
-    </div>
-    <div v-else class="row m-y-2">
-      <div class="col-lg-4 text-lg-center row">
-        <backButton />
-        <h2>Edit Profile</h2>
-      </div>
-      <div class="col-lg-8">
-        <message :message="alertMessage" />
-      </div>
+  <layout-data
+    :alert-message="alertMessage"
+    :data="user"
+    title="Edit profile"
+    :back-button="true"
+  >
+    <div class="row m-y-2">
       <div class="col-lg-4"></div>
       <div class="col-lg-8 push-lg-4 personal-info">
         <form role="form" @submit="updateUser">
@@ -19,11 +14,11 @@
               >First name</label
             >
             <div class="col-lg-9">
-              <input
-                class="form-control"
-                type="text"
-                v-model="user.firstName"
-              />
+<!--              <input-->
+<!--                class="form-control"-->
+<!--                type="text"-->
+<!--                v-model="user.firstName"-->
+<!--              />-->
             </div>
           </div>
           <div class="form-group row">
@@ -101,27 +96,23 @@
         </form>
       </div>
     </div>
-  </layout>
+  </layout-data>
 </template>
 <script>
 import { getUserById, updateUser } from "../services/UserService";
-import LayoutSidebar from "../layouts/LayoutSidebar";
-import BackButton from "../components/BackButton";
-import Message from "../components/Message";
+import LayoutData from "../layouts/LayoutData";
 
 export default {
   name: "UserEdit",
   data() {
     return {
-      user: null,
+      user: {},
       password: null,
       alertMessage: ""
     };
   },
   components: {
-    layout: LayoutSidebar,
-    backButton: BackButton,
-    message: Message
+    LayoutData
   },
   created() {
     this.fetchUser();
@@ -131,11 +122,11 @@ export default {
       const id = this.$route.params.id;
       const user = await getUserById(id);
 
-      if (!user) {
+      if (!user.success) {
         return;
       }
 
-      this.user = user;
+      this.user = user.data;
     },
     async updateUser(e) {
       e.preventDefault();
@@ -145,7 +136,7 @@ export default {
 
       const update = await updateUser(this.user);
       this.password = null;
-      console.log(update)
+      console.log(update);
       this.fetchUser();
     }
   }

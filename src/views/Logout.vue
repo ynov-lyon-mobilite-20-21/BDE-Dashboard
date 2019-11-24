@@ -1,7 +1,7 @@
 <template>
-  <layout>
+  <layout-sidebar>
     <h1>LOGOUT</h1>
-  </layout>
+  </layout-sidebar>
 </template>
 
 <script>
@@ -11,7 +11,7 @@ import { mapActions } from "vuex";
 export default {
   name: "Logout",
   components: {
-    layout: LayoutSidebar,
+    LayoutSidebar
   },
   created() {
     this.logoutUser();
