@@ -1,5 +1,5 @@
 <template>
-  <layout-data :alert-message="message" :data="images.length > 0" title="Manage Images">
+  <layout-data :data="images.length > 0" title="Manage Images">
     <reload-bar :fetch-data-function="fetchImages" />
 
     <form class="form-inline" @submit="handleAddImage">
@@ -25,6 +25,7 @@
 import LayoutData from "../layouts/LayoutData";
 import { createImage, getImages } from "../services/ImagesService";
 import ReloadBar from "../components/ReloadBar";
+import {mapActions} from 'vuex'
 
 export default {
   name: "Images",
@@ -35,7 +36,6 @@ export default {
   data() {
     return {
       images: [],
-      message: "",
       newUrl: ""
     };
   },
@@ -43,6 +43,7 @@ export default {
     this.fetchImages();
   },
   methods: {
+    ...mapActions(["addNotification"]),
     async fetchImages() {
       const result = await getImages();
 
@@ -57,9 +58,15 @@ export default {
       try {
         await createImage({ url: this.newUrl });
         await this.fetchImages();
-        this.message = "Ajout d'une image";
+        this.addNotification({
+          title: "Image",
+          content: "A new image is now stored."
+        });
       } catch (e) {
-        this.message = "Error";
+        this.addNotification({
+          title: "Image",
+          content: "Une erreur est survenue lors de l'ajout de l'image"
+        });
       }
       this.newUrl = "";
     }

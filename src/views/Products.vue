@@ -25,7 +25,7 @@
           <td>
             <button
               type="submit"
-              class="btn btn-primary mr-1"
+              class="btn btn-primary mr-1 mb-1"
               @click="editProduct"
               :data-product-id="product._id"
             >
@@ -43,7 +43,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-danger mr-1"
+              class="btn btn-danger mr-1 mb-1"
               :data-product-id="product._id"
               @click="deleteProduct"
             >
@@ -70,6 +70,7 @@
 import { deleteProductById, getProducts } from "../services/ProductService";
 import LayoutData from "../layouts/LayoutData";
 import ReloadBar from "../components/ReloadBar";
+import {mapActions} from 'vuex'
 
 export default {
   name: "Products",
@@ -87,6 +88,7 @@ export default {
     this.fetchProducts();
   },
   methods: {
+    ...mapActions(["addNotification"]),
     async fetchProducts() {
       const products = await getProducts();
 
@@ -96,7 +98,10 @@ export default {
 
       this.products = products.data;
     },
-    addProduct(e) {},
+    addProduct(e) {
+      e.preventDefault();
+      this.$router.push({ name: "product-edit", params: { id: "new" } });
+    },
     editProduct(e) {
       e.preventDefault();
       const id = e.currentTarget.getAttribute("data-product-id");
@@ -106,11 +111,26 @@ export default {
       e.preventDefault();
       const id = e.currentTarget.getAttribute("data-product-id");
       try {
-        console.log(await deleteProductById(id));
+        const result = await deleteProductById(id);
         await this.fetchProducts();
-        this.alertMessage = `Product “${id}“ is now deleted !`;
+
+        if (!result.success) {
+          this.addNotification({
+            title: "Product",
+            content: `Error when deleting product "${id}".`
+          });
+          return;
+        }
+
+        this.addNotification({
+          title: "Product",
+          content: `The product "${id}" has been deleted.`
+        });
       } catch (e) {
-        this.alertMessage = `Can't delete product “${id}“ !`;
+        this.addNotification({
+          title: "Product",
+          content: `Error when deleting product "${id}".`
+        });
       }
     }
   }

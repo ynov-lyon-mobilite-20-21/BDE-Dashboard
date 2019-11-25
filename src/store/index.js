@@ -16,7 +16,8 @@ export default new Vuex.Store({
       token: null,
       refreshToken: null
     },
-    user: null
+    user: null,
+    notifications: []
   },
   mutations: {
     setToken(state, { token, refreshToken }) {
@@ -24,6 +25,9 @@ export default new Vuex.Store({
     },
     setUser(state, user) {
       state.user = user;
+    },
+    addNotification(state, { title, content }) {
+      state.notifications.push({ title, content })
     }
   },
   actions: {
@@ -44,14 +48,18 @@ export default new Vuex.Store({
       commit("setUser", user.data);
       return true;
     },
-    logoutUser () {
+    logoutUser({ commit }) {
       commit("setToken", { refreshToken: null, token: null });
       commit("setUser", null);
+    },
+    addNotification({ commit }, { title, content }) {
+      commit("addNotification", { title, content });
     }
   },
   modules: {},
   getters: {
     user: state => state.user,
-    token: state => state.auth.token
+    token: state => state.auth.token,
+    notifications: state => state.notifications
   }
 });

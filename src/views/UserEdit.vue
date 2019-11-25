@@ -1,6 +1,5 @@
 <template>
   <layout-data
-    :alert-message="alertMessage"
     :data="user"
     title="Edit profile"
     :back-button="true"
@@ -14,11 +13,11 @@
               >First name</label
             >
             <div class="col-lg-9">
-<!--              <input-->
-<!--                class="form-control"-->
-<!--                type="text"-->
-<!--                v-model="user.firstName"-->
-<!--              />-->
+              <input
+                class="form-control"
+                type="text"
+                v-model="user.firstName"
+              />
             </div>
           </div>
           <div class="form-group row">
@@ -33,8 +32,11 @@
             <label class="col-lg-3 col-form-label form-control-label"
               >Email</label
             >
-            <div class="col-lg-9">
+            <div class="col-lg-9 input-group">
               <input class="form-control" type="email" v-model="user.mail" />
+              <div class="input-group-append">
+                <span class="input-group-text">@</span>
+              </div>
             </div>
           </div>
           <div class="form-group row">
@@ -101,6 +103,7 @@
 <script>
 import { getUserById, updateUser } from "../services/UserService";
 import LayoutData from "../layouts/LayoutData";
+import {mapActions} from 'vuex'
 
 export default {
   name: "UserEdit",
@@ -108,19 +111,23 @@ export default {
     return {
       user: {},
       password: null,
-      alertMessage: ""
     };
   },
   components: {
     LayoutData
   },
+  computed: {
+    id() {
+      return this.$route.params.id;
+    }
+  },
   created() {
     this.fetchUser();
   },
   methods: {
+    ...mapActions(["addNotification"]),
     async fetchUser() {
-      const id = this.$route.params.id;
-      const user = await getUserById(id);
+      const user = await getUserById(this.id);
 
       if (!user.success) {
         return;
@@ -134,10 +141,22 @@ export default {
         this.user.password = this.password;
       }
 
-      const update = await updateUser(this.user);
-      this.password = null;
-      console.log(update);
+      const result = await updateUser(this.user);
       this.fetchUser();
+
+      if (!result.success) {
+        this.addNotification({
+          title: "User",
+          content: `Error when updating the user "${this.user._id}".`
+        });
+        return;
+      }
+
+      this.addNotification({
+        title: "User",
+        content: `The user "${this.user._id}" was update`
+      });
+      this.password = null;
     }
   }
 };

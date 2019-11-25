@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import LayoutSidebar from "../layouts/LayoutSidebar";
 
 export default {
@@ -15,7 +15,7 @@ export default {
     LayoutSidebar
   },
   computed: {
-    ...mapState(["user"])
+    ...mapGetters(["user"])
   }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <layout-data :alert-message="alertMessage" :data="users.length > 0" title="Manage Users">
+  <layout-data :data="users.length > 0" title="Manage Users">
     <reload-bar
       :fetch-data-function="fetchUsers"
       :handle-add-function="toggleModal"
@@ -20,7 +20,7 @@
             {{ user.mail }}
             <svg
               v-if="user.isAdmin"
-              style="height: 10px"
+              style="height: 10px; color: #F6A704"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 640 512"
             >
@@ -34,7 +34,7 @@
           <td>
             <button
               type="submit"
-              class="btn btn-primary mr-1"
+              class="btn btn-primary mr-1 mb-1"
               @click="editUser"
               :data-user-id="user._id"
             >
@@ -52,7 +52,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-danger mr-1"
+              class="btn btn-danger mr-1 mb-1"
               :data-user-id="user._id"
               @click="deleteUser"
             >
@@ -70,8 +70,8 @@
             </button>
             <button
               v-if="!user.active"
-              type="button"
-              class="btn btn-success"
+              type="button mb-1"
+              class="btn btn-success mb-1"
               :data-user-mail="user.mail"
               @click="handleResendActivationLink"
             >
@@ -97,8 +97,11 @@
           <label class="col-lg-3 col-form-label form-control-label"
             >Email</label
           >
-          <div class="col-lg-9">
+          <div class="col-lg-9 input-group">
             <input class="form-control" type="email" v-model="addUserMail" />
+            <div class="input-group-append">
+              <span class="input-group-text">@</span>
+            </div>
           </div>
         </div>
         <div class="text-right">
@@ -126,6 +129,7 @@ import { getUsers, deleteUserById, createUser } from "../services/UserService";
 import Modal from "../components/Modal";
 import LayoutData from "../layouts/LayoutData";
 import ReloadBar from "../components/ReloadBar";
+import {mapActions} from 'vuex'
 
 export default {
   name: "Users",
@@ -134,7 +138,6 @@ export default {
       users: [],
       addUserModelIsOpen: false,
       addUserMail: null,
-      alertMessage: ""
     };
   },
   components: {
@@ -146,6 +149,7 @@ export default {
     this.fetchUsers();
   },
   methods: {
+    ...mapActions(["addNotification"]),
     async fetchUsers() {
       const users = await getUsers();
 
@@ -169,11 +173,34 @@ export default {
     async createUser(e) {
       e.preventDefault();
       try {
-        await createUser(this.addUserMail);
+        const result = await createUser(this.addUserMail);
+
+        if (!result.success || !result.data.mailIsSent) {
+          if (result.error.code && result.error.code === "MAIL_ALREADY_USING") {
+            this.addNotification({
+              title: "User",
+              content: `The user "${this.addUserMail}" already exists.`
+            });
+            return;
+          }
+
+          this.addNotification({
+            title: "User",
+            content: "An error has occurred"
+          });
+          return;
+        }
+
         await this.fetchUsers();
-        this.alertMessage = `Mail send to ${this.addUserMail}`;
+        this.addNotification({
+          title: "User",
+          content: `You have just added the user ${result.data._id}. He will have to confirm his registration in the email he received.`
+        });
       } catch (e) {
-        this.alertMessage = `Incorrect mail`;
+        this.addNotification({
+          title: "User",
+          content: "An error has occurred"
+        });
       }
       this.toggleModal();
       this.addUserMail = null;
@@ -182,21 +209,60 @@ export default {
       e.preventDefault();
       const id = e.currentTarget.getAttribute("data-user-id");
       try {
-        await deleteUserById(id);
+        const result = await deleteUserById(id);
         await this.fetchUsers();
-        this.alertMessage = `User “${id}“ is now deleted !`;
+
+        if (!result.success) {
+          this.addNotification({
+            title: "User",
+            content: `Error when deleting user "${id}".`
+          });
+          return;
+        }
+
+        this.addNotification({
+          title: "User",
+          content: `The user "${id}" has been deleted.`
+        });
       } catch (e) {
-        this.alertMessage = `Can't delete user “${id}“ !`;
+        this.addNotification({
+          title: "User",
+          content: `Error when deleting user "${id}".`
+        });
       }
     },
     async handleResendActivationLink(e) {
       e.preventDefault();
       const mail = e.currentTarget.getAttribute("data-user-mail");
       try {
-        await createUser(mail);
-        this.alertMessage = `Mail send to ${mail}`;
+        const result = await createUser(mail);
+
+        if (!result.success || !result.data.mailIsSent) {
+          if (result.error.code && result.error.code === "MAIL_ALREADY_USING") {
+            this.addNotification({
+              title: "User",
+              content: `The user "${mail}" already exists.`
+            });
+            return;
+          }
+
+          this.addNotification({
+            title: "User",
+            content: `Error when sending the mail to "${mail}".`
+          });
+          return;
+        }
+
+        await this.fetchUsers();
+        this.addNotification({
+          title: "User",
+          content: `A confirmation email was sent back to "${mail}".`
+        });
       } catch (e) {
-        this.alertMessage = `Can't send mail to ${mail}`;
+        this.addNotification({
+          title: "User",
+          content: `Error when sending the mail to "${mail}".`
+        });
       }
     }
   }

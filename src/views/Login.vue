@@ -42,7 +42,7 @@ export default {
     LayoutSidebar
   },
   methods: {
-    ...mapActions(["authenticateUser"]),
+    ...mapActions(["authenticateUser", "addNotification"]),
     async handleLogin(e) {
       e.preventDefault();
       const isAuthenticated = await this.authenticateUser({
@@ -51,6 +51,10 @@ export default {
       });
 
       if (isAuthenticated) {
+        this.addNotification({
+          title: "Login",
+          content: "You are now connected"
+        });
         await this.$router.push({ name: "home" });
       }
     }

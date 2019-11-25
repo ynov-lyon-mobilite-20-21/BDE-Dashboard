@@ -5,9 +5,6 @@
         <backButtonComponenent v-if="backButton" />
         <h2>{{ title }}</h2>
       </div>
-      <div class="col-lg-8">
-        <message :message="alertMessage" />
-      </div>
     </div>
     <div v-if="!data" class="loading">
       Loading...
@@ -27,8 +24,7 @@ export default {
   name: "DataTemplate",
   components: {
     backButtonComponenent: BackButton,
-    layout: LayoutSidebar,
-    message: Message
+    layout: LayoutSidebar
   },
   props: {
     title: {
@@ -36,9 +32,6 @@ export default {
       required: true
     },
     data: {
-      required: true
-    },
-    alertMessage: {
       required: true
     },
     backButton: {

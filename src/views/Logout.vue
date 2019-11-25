@@ -15,9 +15,13 @@ export default {
   },
   created() {
     this.logoutUser();
+    this.addNotification({
+      title: "Login",
+      content: "You are now disconnected"
+    });
     this.$router.push({ name: "login" });
   },
-  methods: mapActions(["logoutUser"])
+  methods: mapActions(["logoutUser", "addNotification"])
 };
 </script>
 

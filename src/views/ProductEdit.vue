@@ -2,19 +2,19 @@
   <layout-data
     :alert-message="alertMessage"
     :data="product"
-    title="Edit Product"
+    :title="id === 'new' ? 'Create product' : 'Edit Product'"
     :backButton="true"
   >
     <div class="row m-y-2">
       <div class="col-lg-4"></div>
       <div class="col-lg-8 push-lg-4 personal-info">
-        <form role="form" @submit="updateProduct">
+        <form role="form" @submit="handleSubmitForm">
           <div class="form-group row">
             <label class="col-lg-3 col-form-label form-control-label"
               >Product ID</label
             >
             <div class="col-lg-9">
-              <p>{{ product._id }}</p>
+              <p v-if="product._id">{{ product._id }}</p>
             </div>
           </div>
           <div class="form-group row">
@@ -23,6 +23,17 @@
             >
             <div class="col-lg-9">
               <input class="form-control" type="text" v-model="product.name" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label"
+              >Price</label
+            >
+            <div class="col-lg-9 input-group">
+              <input class="form-control" step="0.01" type="number" v-model="product.price" />
+              <div class="input-group-append">
+                <span class="input-group-text">€</span>
+              </div>
             </div>
           </div>
           <div class="form-group row">
@@ -84,8 +95,13 @@
 
 <script>
 import DynamicList from "../components/DynamicList";
-import { getProductById, updateProduct } from "../services/ProductService";
+import {
+  createProduct,
+  getProductById,
+  updateProduct
+} from "../services/ProductService";
 import LayoutData from "../layouts/LayoutData";
+import {mapActions} from 'vuex'
 
 export default {
   name: "ProductEdit",
@@ -99,13 +115,29 @@ export default {
       alertMessage: ""
     };
   },
-  created() {
+  beforeMount() {
     this.fetchProduct();
   },
+  computed: {
+    id() {
+      return this.$route.params.id;
+    }
+  },
   methods: {
+    ...mapActions(["addNotification"]),
     async fetchProduct() {
-      const id = this.$route.params.id;
-      const product = await getProductById(id);
+      if (this.id === "new") {
+        this.product = {
+          name: "",
+          description: "",
+          category: "",
+          images: [],
+          price: 0
+        };
+        return;
+      }
+
+      const product = await getProductById(this.id);
 
       if (!product.success) {
         return;
@@ -113,12 +145,53 @@ export default {
 
       this.product = product.data;
     },
-    async updateProduct(e) {
+    handleSubmitForm(e) {
       e.preventDefault();
+      if (this.id === "new") {
+        this.handleCreateProduct();
+        return;
+      }
 
-      const update = await updateProduct(this.product);
-      console.log(update);
+      this.handleUpdateProduct();
+    },
+    async handleUpdateProduct() {
+      const result = await updateProduct(this.product);
       this.fetchProduct();
+
+      if (!result.success) {
+        this.addNotification({
+          title: "Product",
+          content: `Error when updating the product "${this.result._id}".`
+        });
+        return;
+      }
+
+      this.addNotification({
+        title: "Product",
+        content: `The product "${this.product._id}" was update`
+      });
+    },
+    async handleCreateProduct() {
+      const result = await createProduct(this.product);
+
+      if (!result.success) {
+        this.addNotification({
+          title: "Product",
+          content: `Error when creating the product.`
+        });
+        return;
+      }
+
+      this.$router
+        .replace({
+          name: "product-edit",
+          params: { id: result.data._id }
+        })
+        .then(this.fetchProduct);
+      this.addNotification({
+        title: "Product",
+        content: `A product has been created with the id "${this.result._id}".`
+      });
     }
   }
 };

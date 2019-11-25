@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="btn btn-primary" @click="toggleModal">Modifier</button>
+    <button type="button" class="btn btn-primary" @click="toggleModal">Modifier</button>
     <div class="row text-center text-lg-left">
       <div v-for="image in value" :key="image" class="col-lg-3 col-md-4 col-6">
         <img class="img-fluid img-thumbnail" :src="image" alt="empty" />

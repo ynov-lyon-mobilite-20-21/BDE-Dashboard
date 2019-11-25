@@ -19,7 +19,8 @@ const createProduct = async params =>
   await request({
     url: `${Config.baseUrl}/products/`,
     method: "POST",
-    body: { ...params }
+    body: { ...params },
+    bearerToken: store.getters.token
   });
 
 const updateProduct = async ({ _id, ...params }) =>
