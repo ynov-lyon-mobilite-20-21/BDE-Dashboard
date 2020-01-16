@@ -31,7 +31,7 @@ const request = async ({
       return { success: false };
     }
 
-    return obj;
+    return obj.data;
   } catch (e) {
     console.log(e);
     return { success: false };

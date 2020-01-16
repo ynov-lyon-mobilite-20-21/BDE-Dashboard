@@ -10,7 +10,7 @@
       Loading...
     </div>
     <div v-else>
-      <slot></slot>
+      <slot />
     </div>
   </layout>
 </template>
@@ -18,7 +18,6 @@
 <script>
 import LayoutSidebar from "./LayoutSidebar";
 import BackButton from "../components/BackButton";
-import Message from "../components/Message";
 
 export default {
   name: "DataTemplate",

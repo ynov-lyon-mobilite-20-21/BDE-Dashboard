@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { authenticateUser } from "../services/AuthenticationService";
-import { me } from "../services/UserService";
+import { getMe } from "../services/UserService";
 // import VuexPersist from "vuex-persist";
 
 Vue.use(Vuex);
@@ -27,26 +27,24 @@ export default new Vuex.Store({
       state.user = user;
     },
     addNotification(state, { title, content }) {
-      state.notifications.push({ title, content })
+      state.notifications.push({ title, content });
     }
   },
   actions: {
     async authenticateUser({ commit }, { mail, password }) {
       const tokens = await authenticateUser(mail, password);
       commit("setToken", {
-        token: tokens.data.token,
-        refreshToken: tokens.data.refreshToken
+        token: tokens.token,
+        refreshToken: tokens.refreshToken
       });
 
-      const user = await me();
+      const user = await getMe();
 
-      if (!user.data.isAdmin) {
+      if (!user.isAdmin) {
         commit("setToken", { refreshToken: null, token: null });
-        return false;
+      } else {
+        commit("setUser", user);
       }
-
-      commit("setUser", user.data);
-      return true;
     },
     logoutUser({ commit }) {
       commit("setToken", { refreshToken: null, token: null });

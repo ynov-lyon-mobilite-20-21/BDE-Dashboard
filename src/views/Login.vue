@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import LayoutSidebar from "../layouts/LayoutSidebar";
 
 export default {
@@ -45,18 +45,10 @@ export default {
     ...mapActions(["authenticateUser", "addNotification"]),
     async handleLogin(e) {
       e.preventDefault();
-      const isAuthenticated = await this.authenticateUser({
+      this.authenticateUser({
         mail: this.mail,
         password: this.password
-      });
-
-      if (isAuthenticated) {
-        this.addNotification({
-          title: "Login",
-          content: "You are now connected"
-        });
-        await this.$router.push({ name: "home" });
-      }
+      })
     }
   },
   data() {
@@ -64,6 +56,16 @@ export default {
       mail: "",
       password: ""
     };
+  },
+  computed: {
+    ...mapGetters(["user"])
+  },
+  watch: {
+    user(val) {
+      if (val) {
+        this.$router.push({ name: "home" });
+      }
+    }
   }
 };
 </script>

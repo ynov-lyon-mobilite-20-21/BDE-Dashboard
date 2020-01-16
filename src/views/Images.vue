@@ -5,14 +5,23 @@
     <form class="form-inline" @submit="handleAddImage">
       <div class="form-group mb-2">
         <label for="urlNewImage" class="sr-only">New Image URL</label>
-        <input type="text" class="form-control" id="urlNewImage" v-model="newUrl">
+        <input
+          type="text"
+          class="form-control"
+          id="urlNewImage"
+          v-model="newUrl"
+        />
       </div>
       <button type="submit" class="btn btn-primary mb-2">Add</button>
     </form>
 
     <div class="row text-center text-lg-left">
-      <div v-for="image in images" :key="image._id" class="col-lg-3 col-md-4 col-6">
-        <img class="img-fluid img-thumbnail" :src="image.url"  alt="empty"/>
+      <div
+        v-for="image in images"
+        :key="image._id"
+        class="col-lg-3 col-md-4 col-6"
+      >
+        <img class="img-fluid img-thumbnail" :src="image.url" alt="empty" />
         <div class="input-group mb-3">
           <input type="text" class="form-control" disabled :value="image.url" />
         </div>
@@ -25,7 +34,7 @@
 import LayoutData from "../layouts/LayoutData";
 import { createImage, getImages } from "../services/ImagesService";
 import ReloadBar from "../components/ReloadBar";
-import {mapActions} from 'vuex'
+import { mapActions } from "vuex";
 
 export default {
   name: "Images",
@@ -47,11 +56,11 @@ export default {
     async fetchImages() {
       const result = await getImages();
 
-      if (!result.success) {
+      if (!result) {
         return;
       }
 
-      this.images = result.data;
+      this.images = result;
     },
     async handleAddImage(e) {
       e.preventDefault();

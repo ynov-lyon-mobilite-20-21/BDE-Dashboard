@@ -70,7 +70,7 @@
 import { deleteProductById, getProducts } from "../services/ProductService";
 import LayoutData from "../layouts/LayoutData";
 import ReloadBar from "../components/ReloadBar";
-import {mapActions} from 'vuex'
+import { mapActions } from "vuex";
 
 export default {
   name: "Products",
@@ -96,7 +96,7 @@ export default {
         return;
       }
 
-      this.products = products.data;
+      this.products = products;
     },
     addProduct(e) {
       e.preventDefault();
