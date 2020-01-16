@@ -1,5 +1,5 @@
 <template>
-  <layout>
+  <layout-sidebar>
     <form @submit="handleLogin" class="col-lg-5 center-block">
       <div class="form-group">
         <label for="exampleInputEmail1">Adresse mail</label>
@@ -29,7 +29,7 @@
 
       <button type="submit" class="btn btn-primary">Connexion</button>
     </form>
-  </layout>
+  </layout-sidebar>
 </template>
 
 <script>
@@ -39,10 +39,10 @@ import LayoutSidebar from "../layouts/LayoutSidebar";
 export default {
   name: "Login",
   components: {
-    layout: LayoutSidebar
+    LayoutSidebar
   },
   methods: {
-    ...mapActions(["authenticateUser"]),
+    ...mapActions(["authenticateUser", "addNotification"]),
     async handleLogin(e) {
       e.preventDefault();
       const isAuthenticated = await this.authenticateUser({
@@ -51,6 +51,10 @@ export default {
       });
 
       if (isAuthenticated) {
+        this.addNotification({
+          title: "Login",
+          content: "You are now connected"
+        });
         await this.$router.push({ name: "home" });
       }
     }

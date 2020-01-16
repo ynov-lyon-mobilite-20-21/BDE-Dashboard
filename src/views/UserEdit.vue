@@ -1,16 +1,10 @@
 <template>
-  <layout>
-    <div v-if="!user" class="loading">
-      Loading...
-    </div>
-    <div v-else class="row m-y-2">
-      <div class="col-lg-4 text-lg-center row">
-        <backButton />
-        <h2>Edit Profile</h2>
-      </div>
-      <div class="col-lg-8">
-        <message :message="alertMessage" />
-      </div>
+  <layout-data
+    :data="user"
+    title="Edit profile"
+    :back-button="true"
+  >
+    <div class="row m-y-2">
       <div class="col-lg-4"></div>
       <div class="col-lg-8 push-lg-4 personal-info">
         <form role="form" @submit="updateUser">
@@ -38,8 +32,11 @@
             <label class="col-lg-3 col-form-label form-control-label"
               >Email</label
             >
-            <div class="col-lg-9">
+            <div class="col-lg-9 input-group">
               <input class="form-control" type="email" v-model="user.mail" />
+              <div class="input-group-append">
+                <span class="input-group-text">@</span>
+              </div>
             </div>
           </div>
           <div class="form-group row">
@@ -125,41 +122,42 @@
         </form>
       </div>
     </div>
-  </layout>
+  </layout-data>
 </template>
 <script>
 import { getUserById, updateUser } from "../services/UserService";
-import LayoutSidebar from "../layouts/LayoutSidebar";
-import BackButton from "../components/BackButton";
-import Message from "../components/Message";
+import LayoutData from "../layouts/LayoutData";
+import {mapActions} from 'vuex'
 
 export default {
   name: "UserEdit",
   data() {
     return {
-      user: null,
+      user: {},
       password: null,
-      alertMessage: ""
     };
   },
   components: {
-    layout: LayoutSidebar,
-    backButton: BackButton,
-    message: Message
+    LayoutData
+  },
+  computed: {
+    id() {
+      return this.$route.params.id;
+    }
   },
   created() {
     this.fetchUser();
   },
   methods: {
+    ...mapActions(["addNotification"]),
     async fetchUser() {
-      const id = this.$route.params.id;
-      const user = await getUserById(id);
+      const user = await getUserById(this.id);
 
-      if (!user) {
+      if (!user.success) {
         return;
       }
 
-      this.user = user;
+      this.user = user.data;
     },
     async updateUser(e) {
       e.preventDefault();
@@ -167,10 +165,22 @@ export default {
         this.user.password = this.password;
       }
 
-      const update = await updateUser(this.user);
-      this.password = null;
-      console.log(update)
+      const result = await updateUser(this.user);
       this.fetchUser();
+
+      if (!result.success) {
+        this.addNotification({
+          title: "User",
+          content: `Error when updating the user "${this.user._id}".`
+        });
+        return;
+      }
+
+      this.addNotification({
+        title: "User",
+        content: `The user "${this.user._id}" was update`
+      });
+      this.password = null;
     }
   }
 };

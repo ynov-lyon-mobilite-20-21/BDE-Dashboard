@@ -1,7 +1,7 @@
 <template>
-  <layout>
+  <layout-sidebar>
     <h1>LOGOUT</h1>
-  </layout>
+  </layout-sidebar>
 </template>
 
 <script>
@@ -11,13 +11,17 @@ import { mapActions } from "vuex";
 export default {
   name: "Logout",
   components: {
-    layout: LayoutSidebar,
+    LayoutSidebar
   },
   created() {
     this.logoutUser();
+    this.addNotification({
+      title: "Login",
+      content: "You are now disconnected"
+    });
     this.$router.push({ name: "login" });
   },
-  methods: mapActions(["logoutUser"])
+  methods: mapActions(["logoutUser", "addNotification"])
 };
 </script>
 

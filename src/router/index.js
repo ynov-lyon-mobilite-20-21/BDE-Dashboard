@@ -4,7 +4,10 @@ import store from "../store/index";
 
 import Home from "../views/Home.vue";
 import Users from "../views/Users.vue";
+import Products from "../views/Products.vue";
 import UserEdit from "../views/UserEdit.vue";
+import ProductEdit from "../views/ProductEdit.vue";
+import Images from "../views/Images";
 
 Vue.use(VueRouter);
 
@@ -45,6 +48,24 @@ const routes = [
     name: "user-edit",
     beforeEnter: requireLogin,
     component: UserEdit
+  },
+  {
+    path: "/administration/products",
+    name: "products",
+    beforeEnter: requireLogin,
+    component: Products
+  },
+  {
+    path: "/administration/products/edit/:id",
+    name: "product-edit",
+    beforeEnter: requireLogin,
+    component: ProductEdit
+  },
+  {
+    path: "/administration/images",
+    name: "images",
+    beforeEnter: requireLogin,
+    component: Images
   },
   {
     path: "/users/activation",

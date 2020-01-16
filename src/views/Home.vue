@@ -1,21 +1,21 @@
 <template>
-  <layout>
+  <layout-sidebar>
     <h1>HOME</h1>
     <p>Bonjour {{ user.mail }}</p>
-  </layout>
+  </layout-sidebar>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import LayoutSidebar from "../layouts/LayoutSidebar";
 
 export default {
   name: "Home",
   components: {
-    layout: LayoutSidebar
+    LayoutSidebar
   },
   computed: {
-    ...mapState(["user"])
+    ...mapGetters(["user"])
   }
 };
 </script>
