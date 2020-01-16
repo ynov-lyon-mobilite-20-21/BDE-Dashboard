@@ -43,6 +43,30 @@
             </div>
           </div>
           <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label"
+              >Address</label
+            >
+            <div class="col-lg-9 input-group">
+              <input class="form-control" type="address" v-model="user.address" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label"
+              >Postal Code</label
+            >
+            <div class="col-lg-9 input-group">
+              <input class="form-control" type="postalCode" v-model="user.postalCode" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-3 col-form-label form-control-label"
+              >City</label
+            >
+            <div class="col-lg-9 input-group">
+              <input class="form-control" type="postalCode" v-model="user.city" />
+            </div>
+          </div>
+          <div class="form-group row">
             <label
               class="col-lg-3 col-form-label form-control-label form-check-label"
               for="exampleCheck1"
