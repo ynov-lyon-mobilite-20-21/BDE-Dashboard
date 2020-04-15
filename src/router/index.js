@@ -38,6 +38,11 @@ const routes = [
     component: Home
   },
   {
+    path: "/",
+    name: "publicHome",
+    component: () => import("../views/PublicHome.vue")
+  },
+  {
     path: "/administration/users",
     name: "users",
     beforeEnter: requireLogin,
