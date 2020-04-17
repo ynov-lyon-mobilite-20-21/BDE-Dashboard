@@ -25,6 +25,10 @@ const request = async ({
     const result = await fetch(url, requestParams);
 
     try {
+        if (result.status === 204) {
+            return { success: true };
+        }
+
         const obj = await result.json();
 
         if (!obj) {
