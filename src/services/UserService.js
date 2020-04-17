@@ -45,7 +45,7 @@ const updateUser = async user => {
 
 const activeUser = async (userId, activationKey, password) =>
   await request({
-    url: `${Config.baseUrl}/users/activation`,
+    url: `${Config.baseUrl}/users/active`,
     method: "POST",
     body: { userId, activationKey, password }
   });

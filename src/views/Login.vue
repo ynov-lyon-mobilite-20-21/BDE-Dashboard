@@ -48,7 +48,7 @@ export default {
       this.authenticateUser({
         mail: this.mail,
         password: this.password
-      })
+      });
     }
   },
   data() {
