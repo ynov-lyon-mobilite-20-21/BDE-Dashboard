@@ -179,7 +179,7 @@ export default {
             try {
                 const result = await createUser(this.addUserMail);
 
-                if (!result.success || !result.data.mailIsSent) {
+                if (!result.success) {
                     if (
                         result.error.code &&
                         result.error.code === "MAIL_ALREADY_USING"
