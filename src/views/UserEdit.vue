@@ -152,11 +152,11 @@
     </layout-data>
 </template>
 <script>
-import { getUserById, updateUser } from "../services/UserService";
-import LayoutData from "../layouts/LayoutData";
-import { mapActions } from "vuex";
+    import {getUserById, updateUser} from '../services/UserService'
+    import LayoutData from '../layouts/LayoutData'
+    import {mapActions} from 'vuex'
 
-export default {
+    export default {
     name: "UserEdit",
     data() {
         return {
@@ -178,13 +178,7 @@ export default {
     methods: {
         ...mapActions(["addNotification"]),
         async fetchUser() {
-            const user = await getUserById(this.id);
-
-            if (!user.success) {
-                return;
-            }
-
-            this.user = user.data;
+            this.user = await getUserById(this.id);
         },
         async updateUser(e) {
             e.preventDefault();
@@ -195,7 +189,7 @@ export default {
             const result = await updateUser(this.user);
             this.fetchUser();
 
-            if (!result.success) {
+            if (!result) {
                 this.addNotification({
                     title: "User",
                     content: `Error when updating the user "${this.user._id}".`
