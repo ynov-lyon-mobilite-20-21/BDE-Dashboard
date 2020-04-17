@@ -154,11 +154,11 @@ export default {
 
             const product = await getProductById(this.id);
 
-            if (!product.success) {
+            if (!product) {
                 return;
             }
 
-            this.product = product.data;
+            this.product = product;
         },
         handleSubmitForm(e) {
             e.preventDefault();
@@ -189,7 +189,7 @@ export default {
         async handleCreateProduct() {
             const result = await createProduct(this.product);
 
-            if (!result.success) {
+            if (!result) {
                 this.addNotification({
                     title: "Product",
                     content: `Error when creating the product.`
@@ -197,15 +197,16 @@ export default {
                 return;
             }
 
-            this.$router
-                .replace({
-                    name: "product-edit",
-                    params: { id: result.data._id }
-                })
-                .then(this.fetchProduct);
+            // this.$router
+            //     .replace({
+            //         name: "product-edit",
+            //         params: { id: result._id }
+            //     })
+            //     .then(this.fetchProduct);
+            this.$router.push({ name: "products" });
             this.addNotification({
                 title: "Product",
-                content: `A product has been created with the id "${this.result._id}".`
+                content: `A product has been created.`
             });
         }
     }
