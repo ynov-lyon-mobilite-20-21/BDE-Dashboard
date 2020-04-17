@@ -8,7 +8,8 @@ Vue.use(Vuex);
 
 const vuexLocalStorage = new VuexPersist({
     key: "vuex",
-    storage: window.localStorage
+    storage: window.localStorage,
+    reducer: ({ auth }) => ({ auth })
 });
 
 export default new Vuex.Store({
