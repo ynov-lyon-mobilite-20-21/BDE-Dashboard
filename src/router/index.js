@@ -12,78 +12,78 @@ import Images from "../views/Images";
 Vue.use(VueRouter);
 
 const requireLogin = (to, from, next) => {
-  if (store.state.auth.token) {
-    next();
-  } else {
-    next("/administration/login");
-  }
+    if (store.state.auth.token) {
+        next();
+    } else {
+        next("/administration/login");
+    }
 };
 
 const routes = [
-  {
-    path: "/administration/login",
-    name: "login",
-    component: () => import("../views/Login.vue")
-  },
-  {
-    path: "/administration/logout",
-    name: "logout",
-    beforeEnter: requireLogin,
-    component: () => import("../views/Logout.vue")
-  },
-  {
-    path: "/administration",
-    name: "home",
-    beforeEnter: requireLogin,
-    component: Home
-  },
-  {
-    path: "/",
-    name: "publicHome",
-    component: () => import("../views/PublicHome.vue")
-  },
-  {
-    path: "/administration/users",
-    name: "users",
-    beforeEnter: requireLogin,
-    component: Users
-  },
-  {
-    path: "/administration/users/edit/:id",
-    name: "user-edit",
-    beforeEnter: requireLogin,
-    component: UserEdit
-  },
-  {
-    path: "/administration/products",
-    name: "products",
-    beforeEnter: requireLogin,
-    component: Products
-  },
-  {
-    path: "/administration/products/edit/:id",
-    name: "product-edit",
-    beforeEnter: requireLogin,
-    component: ProductEdit
-  },
-  {
-    path: "/administration/images",
-    name: "images",
-    beforeEnter: requireLogin,
-    component: Images
-  },
-  {
-    path: "/users/activation",
-    name: "user-activation",
-    component: () => import("../views/UserActivation.vue")
-  }
+    {
+        path: "/administration/login",
+        name: "login",
+        component: () => import("../views/Login.vue")
+    },
+    {
+        path: "/administration/logout",
+        name: "logout",
+        beforeEnter: requireLogin,
+        component: () => import("../views/Logout.vue")
+    },
+    {
+        path: "/administration",
+        name: "home",
+        beforeEnter: requireLogin,
+        component: Home
+    },
+    {
+        path: "/",
+        name: "publicHome",
+        component: () => import("../views/PublicHome.vue")
+    },
+    {
+        path: "/administration/users",
+        name: "users",
+        beforeEnter: requireLogin,
+        component: Users
+    },
+    {
+        path: "/administration/users/edit/:id",
+        name: "user-edit",
+        beforeEnter: requireLogin,
+        component: UserEdit
+    },
+    {
+        path: "/administration/products",
+        name: "products",
+        beforeEnter: requireLogin,
+        component: Products
+    },
+    {
+        path: "/administration/products/edit/:id",
+        name: "product-edit",
+        beforeEnter: requireLogin,
+        component: ProductEdit
+    },
+    {
+        path: "/administration/images",
+        name: "images",
+        beforeEnter: requireLogin,
+        component: Images
+    },
+    {
+        path: "/users/activation",
+        name: "user-activation",
+        component: () => import("../views/UserActivation.vue")
+    }
 ];
 
 const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes,
-  linkExactActiveClass: "active"
+    mode: "history",
+    base: process.env.BASE_URL,
+    routes,
+    linkExactActiveClass: "active"
 });
 
 export default router;

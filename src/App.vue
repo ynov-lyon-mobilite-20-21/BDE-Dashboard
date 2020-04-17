@@ -1,18 +1,18 @@
 <template>
-  <div>
-    <router-view />
-    <notifications />
-  </div>
+    <div>
+        <router-view />
+        <notifications />
+    </div>
 </template>
 
 <script>
 import Notifications from "./components/Notifications";
 
 export default {
-  name: "App",
-  components: {
-    Notifications
-  }
+    name: "App",
+    components: {
+        Notifications
+    }
 };
 </script>
 
@@ -22,6 +22,6 @@ export default {
 @import "assets/sidebar.css";
 
 .btn {
-  color: white;
+    color: white;
 }
 </style>
