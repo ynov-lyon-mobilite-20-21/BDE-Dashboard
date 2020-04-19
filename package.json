@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "yarn build && cp ./dist/index.html ./dist/200.html && surge ./dist https://selfbuy.surge.sh"
+    "deploy": "yarn build && cp ./dist/index.html ./dist/200.html && cp ./public/apple-app-site-association ./dist/apple-app-site-association && surge ./dist https://selfbuy.surge.sh"
   },
   "dependencies": {
     "bootstrap-vue": "^2.0.4",
