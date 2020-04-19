@@ -1,0 +1,17 @@
+name: SSH
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+jobs:
+
+  build:
+    name: Deploy on surge
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH Commands
+        uses: Borales/actions-yarn@v2.1.0
+        with:
+          cmd: build
