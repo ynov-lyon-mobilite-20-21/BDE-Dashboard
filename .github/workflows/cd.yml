@@ -1,4 +1,4 @@
-name: SSH
+name: Deploy
 on:
   push:
     branches:
@@ -15,7 +15,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: 13.11.0:wq
+          node-version: 13.11.0
       - run: yarn global add surge
       - run: yarn install
       - run: yarn build
