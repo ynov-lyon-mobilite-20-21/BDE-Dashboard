@@ -4,7 +4,7 @@
         "details": [
             {
                 "appID": "94FLWD5X32.com.ynov.shoko",
-                "paths": ["/users/activation"],
+                "paths": ["*"],
             }
         ]
     }
