@@ -19,5 +19,5 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: cp ./dist/index.html ./dist/200.html
-      - run: cp ./public/apple-app-site-association ./dist/apple-app-site-association
+      - run: cp ./public/apple-app-site-association ./dist/.well-known/apple-app-site-association
       - run: ./node_modules/.bin/surge ./dist ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
