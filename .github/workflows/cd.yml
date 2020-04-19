@@ -16,8 +16,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 13.11.0
-      - run: yarn global add surge
       - run: yarn install
       - run: yarn build
       - run: cp ./dist/index.html ./dist/200.html
-      - run: surge ./dist ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+      - run: ./node_modules/.bin/surge ./dist ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
