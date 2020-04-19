@@ -8,10 +8,16 @@ on:
 jobs:
 
   build:
-    name: Deploy on surge
+    name: Build & Deploy on Surge.sh
     runs-on: ubuntu-latest
     steps:
-      - name: SSH Commands
-        uses: Borales/actions-yarn@v2.1.0
-        with:
-          cmd: build
+      - uses: actions/checkout@v1
+      - name: Install surge and fire deployment
+      uses: actions/setup-node@v1
+      with:
+        node-version: 13.11.0
+      - run: yarn global add surge
+      - run: yarn build
+      - run: yarn build
+      - run: cp ./dist/index.html ./dist/200.html
+      - run: surge ./dist ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
