@@ -76,6 +76,11 @@ const routes = [
         path: "/users/activation",
         name: "user-activation",
         component: () => import("../views/UserActivation.vue")
+    },
+    {
+        path: "/payment/stripe/return",
+        name: "payment-return",
+        component: () => import("../views/PaymentReturn.vue")
     }
 ];
 
