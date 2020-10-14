@@ -109,106 +109,104 @@ export default {
 </script>
 
 <style scoped lang="css">
-
 .box {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
 }
 
 .box .logo {
-  position: absolute;
-  left: 18%;
+    position: absolute;
+    left: 18%;
 }
 
 .box h1 {
-  position: absolute;
-  top: 6%;
-  left: 42%;
-  width: 55%;
-  font-size: 62px;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: 'Inter', sans-serif;
-  font-weight: 900;
+    position: absolute;
+    top: 6%;
+    left: 42%;
+    width: 55%;
+    font-size: 62px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
 }
 
 .box h2 {
-  position: absolute;
-  top: 56%;
-  left: 48%;
-  width: 44%;
-  text-align: right;
-  font-size: 39px;
-  font-style: italic;
-  font-family: 'Inter', sans-serif;
-  font-weight: 900;
+    position: absolute;
+    top: 56%;
+    left: 48%;
+    width: 44%;
+    text-align: right;
+    font-size: 39px;
+    font-style: italic;
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
 }
 
-
 .box .fleche {
-  border: transparent;
-  background-color: transparent;
-  position: absolute;
-  top: 91%;
-  left: 50%;
-  transform: translateX(-50%);
+    border: transparent;
+    background-color: transparent;
+    position: absolute;
+    top: 91%;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .image-fond {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 
 .images {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .visu-image {
-  margin: 130px;
+    margin: 130px;
 }
 
 .visu {
-  margin: 0;
+    margin: 0;
 }
 
 #mockup {
-  margin-top: 5%;
+    margin-top: 5%;
 }
 
 .footer {
-  height: 195px;
-  background-color: black;
-  margin-top: 50px;
+    height: 195px;
+    background-color: black;
+    margin-top: 50px;
 }
 
 p {
-  color: white;
-  font-size: 20px;
-  font-family: "Segoe UI";
+    color: white;
+    font-size: 20px;
+    font-family: "Segoe UI";
 }
 
 .contact1 {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .info {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-left: 75px;
-  margin-right: 75px;
-  padding-top: 46px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 75px;
+    margin-right: 75px;
+    padding-top: 46px;
 }
 
 .android {
-  margin-right: 50px;
+    margin-right: 50px;
 }
 </style>

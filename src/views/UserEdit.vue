@@ -152,11 +152,11 @@
     </layout-data>
 </template>
 <script>
-    import {getUserById, updateUser} from '../services/UserService'
-    import LayoutData from '../layouts/LayoutData'
-    import {mapActions} from 'vuex'
+import { getUserById, updateUser } from "../services/UserService";
+import LayoutData from "../layouts/LayoutData";
+import { mapActions } from "vuex";
 
-    export default {
+export default {
     name: "UserEdit",
     data() {
         return {
