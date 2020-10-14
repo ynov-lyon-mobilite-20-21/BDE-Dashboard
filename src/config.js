@@ -1,3 +1,3 @@
 export default {
-    baseUrl: "https://self-buy-api.herokuapp.com/api"
+    baseUrl: "https://lyon-ynov-bde-api.herokuapp.com/"
 };
